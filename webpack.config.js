@@ -148,7 +148,7 @@ module.exports = {
                 filename: './css/[name].css'
             }
         ),
-        // new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['dist']),
         new CopyWebpackPlugin([
                 {
                     from: './img',
@@ -166,10 +166,10 @@ module.exports = {
                     from: './favicon',
                     to: 'favicon'
                 },
-                /*{
-                    from: './!*.html',
+                {
+                    from: './*.html',
                     to: './'
-                },*/
+                },
                 /*{
                     from: './!*.php',
                     to: './'
