@@ -7,7 +7,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
-
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let isProduction = (process.env.NODE_ENV === 'production');
@@ -24,21 +23,30 @@ module.exports = {
         //основной файл приложения
         app: [
             './js/app.js',
-            './scss/style.scss'
+            './style/scss/app.scss'
         ],
+
+
+        //Еще одна точка входа
+        //payment
+        /*payment: [
+            './js/payment.js',
+            './scss/payment.scss'
+        ],*/
     },
 
     //путь для собранных файлов
     output: {
+        path: path.resolve(__dirname, './dist'),
         filename: 'js/[name].js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '../'
+        publicPath: '/'
     },
 
     //devServer configuration
     devServer: {
-        contentBase: './dist',
-        publicPath: '/dist/',
+        contentBase: './src',
+        // publicPath: 'dist/',
+        overlay: true,
         host: '0.0.0.0',
         port: 9000
     },
@@ -98,7 +106,8 @@ module.exports = {
 
             //Fonts
             {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+                include: path.resolve(__dirname, 'src/fonts'),
                 use: [
                     {
                         loader: 'file-loader',
@@ -139,31 +148,55 @@ module.exports = {
                 filename: './css/[name].css'
             }
         ),
-        new CleanWebpackPlugin(['dist']),
+        // new CleanWebpackPlugin(['dist']),
         new CopyWebpackPlugin([
                 {
                     from: './img',
                     to: 'img'
                 },
+                /*{
+                    from: './js',
+                    to: 'js'
+                },*/
+                /*{
+                    from: './css',
+                    to: 'css'
+                },*/
                 {
                     from: './favicon',
                     to: 'favicon'
                 },
-                {
-                    from: './*.html',
+                /*{
+                    from: './!*.html',
                     to: './'
+                },*/
+                /*{
+                    from: './!*.php',
+                    to: './'
+                },*/
+                /*{
+                    from: './!*.txt',
+                    to: './'
+                },*/
+                {
+                    from: './files',
+                    to: 'files'
                 },
             ],
             {
-                ignore: [{
-                    glob: 'svg/*'
-                }]
+                ignore: [
+                    {
+                        glob: 'svg/*'
+                    },
+                    {
+                        glob: 'modules/*'
+                    }
+                ]
             }),
     ],
 };
 
 //PRODUCTION ONLY
-// console.log(isProduction);
 
 if (isProduction) {
     console.log('------ Production --------');
