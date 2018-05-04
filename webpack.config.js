@@ -8,6 +8,8 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 let isProduction = (process.env.NODE_ENV === 'production');
 
@@ -44,7 +46,8 @@ module.exports = {
 
     //devServer configuration
     devServer: {
-        contentBase: './src',
+        // contentBase: './src',
+        contentBase: './dist',
         // publicPath: 'dist/',
         overlay: true,
         host: '0.0.0.0',
@@ -145,7 +148,8 @@ module.exports = {
         }),
         new ExtractTextPlugin(
             {
-                filename: './css/[name].css'
+                // filename: './css/[name].css'
+                filename: 'css/[name].css'
             }
         ),
         new CleanWebpackPlugin(['dist']),
@@ -166,10 +170,10 @@ module.exports = {
                     from: './favicon',
                     to: 'favicon'
                 },
-                {
-                    from: './*.html',
+                /*{
+                    from: './!*.html',
                     to: './'
-                },
+                },*/
                 /*{
                     from: './!*.php',
                     to: './'
@@ -193,6 +197,13 @@ module.exports = {
                     }
                 ]
             }),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+            alwaysWriteToDisk: true,
+        }),
+        new HtmlWebpackHarddiskPlugin({
+            outputPath: path.resolve(__dirname, 'dist')
+        }),
     ],
 };
 
