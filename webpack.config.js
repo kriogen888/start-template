@@ -199,7 +199,8 @@ module.exports = {
             }),
         new HtmlWebpackPlugin({
             template: 'index.html',
-            alwaysWriteToDisk: true,
+            alwaysWriteToDisk: !isProduction,
+            hash: isProduction,
         }),
         new HtmlWebpackHarddiskPlugin({
             outputPath: path.resolve(__dirname, 'dist')
@@ -208,7 +209,6 @@ module.exports = {
 };
 
 //PRODUCTION ONLY
-
 if (isProduction) {
     console.log('------ Production --------');
 
